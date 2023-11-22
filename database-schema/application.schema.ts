@@ -9,12 +9,12 @@ export const ApplicationSchema = new Schema(
     gender: { type: String, required: true },
     amount: { type: Number, required: true },
     profilePic: {
-      file: { type: Buffer, required: true },
+      file: { type: String, required: true },
       fileName: { type: String, required: true },
       mimeType: { type: String, required: true },
     },
     marksSheet: {
-      file: { type: Buffer, required: true },
+      file: { type: String, required: true },
       fileName: { type: String, required: true },
       mimeType: { type: String, required: true },
     },

@@ -10,26 +10,7 @@ export const getAllApplicationData = async (req: any, res: any) => {
         createdBy: req.user._id,
       });
       if (result) {
-        let listOfApplication = result.map((data: any) => {
-          if (data.profilePic?.file) {
-            data.profilePic = {
-              ...data.profilePic,
-              file: Buffer.from(data.profilePic?.file, "binary").toString(
-                "base64"
-              ),
-            };
-          }
-          if (data.marksSheet?.file) {
-            data.marksSheet = {
-              ...data.marksSheet,
-              file: Buffer.from(data.marksSheet?.file, "binary").toString(
-                "base64"
-              ),
-            };
-          }
-          return data;
-        });
-        return res.json(listOfApplication);
+        return res.json(result);
       } else {
         throw new Error("Failed to fetch data");
       }
@@ -69,19 +50,11 @@ export const createNewApplication = async (req: any, res: any) => {
   try {
     if (req.user) {
       let newApplication = new ApplicationModel(req.body);
-      console.log(
-        'req.body.profilePic.file.split(",")[1]',
-        req.body.profilePic.file.split(",")[1]
-      );
       newApplication.profilePic = {
-        file: Buffer.from(req.body.profilePic.file.split(",")[1], "base64"),
-        fileName: req.body.profilePic.fileName,
-        mimeType: req.body.profilePic.mimeType,
+        ...req.body.profilePic,
       };
       newApplication.marksSheet = {
-        file: Buffer.from(req.body.marksSheet.file, "base64"),
-        fileName: req.body.marksSheet.fileName,
-        mimeType: req.body.marksSheet.mimeType,
+        ...req.body.marksSheet,
       };
       newApplication.createdBy = req.user._id;
       let result = await newApplication.save();
